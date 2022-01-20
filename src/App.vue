@@ -1,17 +1,42 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <TitleBar :items="this.items" @removeItem="removeItem" @tab="changeTab"/>
+    <Bookshop @boughtBook="boughtBook" @tab="changeTab" v-if="tab == 'bookshop'"/>
+    <Checkout :items="this.items" v-if="tab == 'checkout'" @tab="changeTab"/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Bookshop from './components/Bookshop';
+import TitleBar from './components/TitleBar';
+import Checkout from "./components/Checkout";
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Bookshop,
+    TitleBar,
+    Checkout
+  },
+  data: () => {
+    return {
+      books: [],
+      items: [],
+      tab: "bookshop"
+    }
+  },
+  methods: {
+    boughtBook: function(book) {
+      if(this.items.some(item => item.title == book.title)) return;
+      this.items.push(book);
+    },
+    removeItem: function(item) {
+      this.items = this.items.filter(book => book.title != item);
+    },
+    changeTab: function(tab) {
+      console.log(tab);
+      this.tab = tab;
+    }
   }
 }
 </script>
@@ -21,8 +46,10 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  flex-grow: 1;
+  width: 100%;
+  display: flex;
+  flex-flow: column;
 }
 </style>
