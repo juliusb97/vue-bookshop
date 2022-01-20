@@ -1,7 +1,7 @@
 # vue-bookshop
 
 ## Test Server ausführen
-npm run testServer
+```npm run testServer```
 
 ## Project setup
 ```
